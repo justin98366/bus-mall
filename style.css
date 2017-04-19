@@ -37,3 +37,7 @@ html, body{
   height: auto;
   display: inline-block;
 }
+canvas {
+  width: 30%;
+  height: 50%;
+}
