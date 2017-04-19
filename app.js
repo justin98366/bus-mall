@@ -10,9 +10,23 @@ function RandomPics(name, picSource){
   this.timesClicked = 0;
 
 }
+
+//var wrapper = document.getElementById('wrapper');
 var pictureOne = document.getElementById('picture-one');
 var pictureTwo = document.getElementById('picture-two');
 var pictureThree = document.getElementById('picture-three');
+pictureOne.addEventListener('click', handleIncButtonClick);
+pictureTwo.addEventListener('click', handleIncButtonClick);
+pictureThree.addEventListener('click', handleIncButtonClick);
+
+
+function handleIncButtonClick(){
+  displayNewSetPhotos();
+  console.log('It works');
+
+}
+
+
 var photosSecond = [];
 var photosOnScreen = [];
 var photosOnPreviousScreen = [];
@@ -64,7 +78,7 @@ function generatePhotos(){
 
   return photosOnScreen;
 }
-generatePhotos();
+
 
 // for (var i = 0; i < 3; i++){
 //   var threePics = document.createElement('img');
@@ -72,27 +86,42 @@ generatePhotos();
 //   pics.appendChild(threePics);
 //   console.log(threePics);
 // }
-var onePics = document.createElement('img');
-onePics.src = photosOnScreen[0].picSource;
-pictureOne.appendChild(onePics);
 
-var twoPics = document.createElement('img');
-twoPics.src = photosOnScreen[1].picSource;
-pictureTwo.appendChild(twoPics);
+function displayNewSetPhotos(){
+  generatePhotos();
 
-var threePics = document.createElement('img');
-threePics.src = photosOnScreen[2].picSource;
-pictureThree.appendChild(threePics);
+  if (pictureOne.hasChildNodes()){
+    pictureOne.innerHTML = '';
+  }
+  var onePics = document.createElement('img');
+  onePics.src = photosOnScreen[0].picSource;
+  pictureOne.appendChild(onePics);
 
+  if (pictureTwo.hasChildNodes()){
+    pictureTwo.innerHTML = '';
+  }
 
-var my_div = document.getElementById('picture-one');
-my_div.onclick = function() {
-  console.log('booya!');
-  var clicked = this.timesClicked;
-  clicked.timesClicked++;
-  console.log(clicked.timesClicked);
+  var twoPics = document.createElement('img');
+  twoPics.src = photosOnScreen[1].picSource;
+  pictureTwo.appendChild(twoPics);
+  if (pictureThree.hasChildNodes()){
+    pictureThree.innerHTML = '';
+  }
+  var threePics = document.createElement('img');
+  threePics.src = photosOnScreen[2].picSource;
+  pictureThree.appendChild(threePics);
 
-};
+}
+displayNewSetPhotos();
+
+// var my_div = document.getElementById('picture-one');
+// my_div.onclick = function() {
+//   console.log('booya!');
+//   var clicked = this.timesClicked;
+//   clicked.timesClicked++;
+//   console.log(clicked.timesClicked);
+
+//};
 
 
 
