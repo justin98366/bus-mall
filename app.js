@@ -1,41 +1,11 @@
 'use strict';
 
-function RandomPics(name, picSource){
-  this.name = name;
-  this.picSource = './img/' + picSource;
-  this.timesShown = 0;
-  this.timesClicked = 0;
-
-}
-
-//getting my divs from HTML document
-var pictureOne = document.getElementById('picture-one');
-var pictureTwo = document.getElementById('picture-two');
-var pictureThree = document.getElementById('picture-three');
-
-//adding click event listeners to my divs
-pictureOne.addEventListener('click', handleIncButtonClick);
-pictureTwo.addEventListener('click', handleIncButtonClick);
-pictureThree.addEventListener('click', handleIncButtonClick);
-
-function handleIncButtonClick(event){
-  var numberClick = event.target;
-  for (var i = 0; i < photosOnScreen.length; i++){
-    if (numberClick.src === photosOnScreen[i]){
-      photosOnScreen[i].timesClicked++;
-    }
-    console.log(photosOnScreen[i].timesClicked);
-  }
-  //console.log();
-  console.log(numberClick);
-
-  displayNewSetPhotos();
-
-}
-
-var photosSecond = [];
-var photosOnScreen = [];
+var app = document.getElementById('app');
+var clicksRemaining = 25;
+var photosOnSecond = [];
 var photosOnPreviousScreen = [];
+var photosOnScreen = [];
+
 var photos = [
   new RandomPics ('bag', 'bag.jpg'),
   new RandomPics ('banana', 'banana.jpg'),
@@ -62,83 +32,107 @@ var photos = [
   new RandomPics ('wine glass', 'wine-glass.jpg'),
 ];
 
-function getRandomIndex(list){
+renderPhotos();
+
+function RandomPics (name, filename){
+  this.name = name;
+  this.src = './img/' + filename;
+  this.clickCount = 0;
+  this.displayCount = 0;
+}
+
+function getRandomIndex(list) {
   return Math.floor(Math.random() * list.length);
 }
 
 function generatePhotos(){
 
-  photos = photos.concat(photosOnScreen);
-  photosSecond = photosOnPreviousScreen;
+  photos = photos.concat(photosOnSecond);
+  photosOnSecond = photosOnPreviousScreen;
   photosOnPreviousScreen = photosOnScreen;
   photosOnScreen = [];
 
   var nextPhoto = photos.splice(getRandomIndex(photos), 1);
   photosOnScreen = photosOnScreen.concat(nextPhoto);
-
   nextPhoto = photos.splice(getRandomIndex(photos), 1);
   photosOnScreen = photosOnScreen.concat(nextPhoto);
-
   nextPhoto = photos.splice(getRandomIndex(photos), 1);
   photosOnScreen = photosOnScreen.concat(nextPhoto);
-
-  return photosOnScreen;
 }
 
-// for (var i = 0; i < 3; i++){
-//   var threePics = document.createElement('img');
-//   threePics.src = photosOnScreen[i].picSource;
-//   pics.appendChild(threePics);
-//   console.log(threePics);
-// }
+function photoClick(event){
 
-function displayNewSetPhotos(){
+  var image = event.target;
+  var photosOnScreenIndex = image.getAttribute('photos-on-screen-index');
+  photosOnScreen[photosOnScreenIndex].clickCount++;
+  clicksRemaining--;
+
+  if (clicksRemaining > 0){
+    renderPhotos();
+  } else {
+    renderChart();
+  }
+}
+
+function renderPhotos(){
   generatePhotos();
+  app.textContent = '';
 
-  if (pictureOne.hasChildNodes()){
-    pictureOne.innerHTML = '';
-  }
-  var onePics = document.createElement('img');
-  onePics.src = photosOnScreen[0].picSource;
-  pictureOne.appendChild(onePics);
+  var imageElement;
+  for(var i = 0; i < photosOnScreen.length; i++){
+    photosOnScreen[i].displayCount++;
+    imageElement = document.createElement('img');
 
-  if (pictureTwo.hasChildNodes()){
-    pictureTwo.innerHTML = '';
+    imageElement.src = photosOnScreen[i].src;
+    imageElement.setAttribute('photos-on-screen-index', i);
+    imageElement.addEventListener('click', photoClick);
+    app.appendChild(imageElement);
+  }
+}
+
+function renderChart(){
+
+  photos = photos.concat(photosOnScreen);
+  photos = photos.concat(photosOnPreviousScreen);
+  photos = photos.concat(photosOnSecond);
+
+  app.textContent = '';
+
+  var canvas = document.createElement('canvas');
+  canvas.width = app.clientWidth;
+  canvas.height = app.clientWidth;
+  app.appendChild(canvas);
+
+  var ctx = canvas.getContext('2d');
+  ctx.fillRect(0, 0, 50, 50);
+
+  var data = {
+    labels: [],
+    datasets: [
+      {
+        label: 'click count',
+        data: [],
+        backgroundColor: 'red',
+      },
+      {
+        label: 'display count',
+        data: [],
+        backgroundColor: 'blue',
+      },
+    ],
+  };
+
+  var currentPhoto;
+  for(var i = 0; i < photos.length; i++){
+    currentPhoto = photos[i];
+    data.labels.push(currentPhoto.name);
+    data.datasets[0].data.push(currentPhoto.clickCount);
+    data.datasets[1].data.push(currentPhoto.displayCount);
   }
 
-  var twoPics = document.createElement('img');
-  twoPics.src = photosOnScreen[1].picSource;
-  pictureTwo.appendChild(twoPics);
-  if (pictureThree.hasChildNodes()){
-    pictureThree.innerHTML = '';
-  }
-  var threePics = document.createElement('img');
-  threePics.src = photosOnScreen[2].picSource;
-  pictureThree.appendChild(threePics);
+  new Chart(ctx, {
+    type: 'bar',
+    data: data,
+  });
 
 }
-displayNewSetPhotos();
-
-// var my_div = document.getElementById('picture-one');
-// my_div.onclick = function() {
-//   console.log('booya!');
-//   var clicked = this.timesClicked;
-//   clicked.timesClicked++;
-//   console.log(clicked.timesClicked);
-
-//};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//

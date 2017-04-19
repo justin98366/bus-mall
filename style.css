@@ -14,11 +14,17 @@ html, body{
   background-color: beige;
 }
 
-#picture-one{
-  width: 30%;
+#app{
+  width: 100%;
   height: auto;
   display: inline-block;
 }
+
+#app img{
+  width: 350px;
+  height: 350px;
+}
+
 
 #picture-two{
   width: 30%;
