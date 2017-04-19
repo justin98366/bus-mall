@@ -2,30 +2,36 @@
 
 function RandomPics(name, picSource){
   this.name = name;
-  // this.src = ['img/bag.jpg', 'img/banana.jpg', 'img/bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg',
-  // ];
   this.picSource = './img/' + picSource;
-  //this.path =
   this.timesShown = 0;
   this.timesClicked = 0;
 
 }
 
-//var wrapper = document.getElementById('wrapper');
+//getting my divs from HTML document
 var pictureOne = document.getElementById('picture-one');
 var pictureTwo = document.getElementById('picture-two');
 var pictureThree = document.getElementById('picture-three');
+
+//adding click event listeners to my divs
 pictureOne.addEventListener('click', handleIncButtonClick);
 pictureTwo.addEventListener('click', handleIncButtonClick);
 pictureThree.addEventListener('click', handleIncButtonClick);
 
+function handleIncButtonClick(event){
+  var numberClick = event.target;
+  for (var i = 0; i < photosOnScreen.length; i++){
+    if (numberClick.src === photosOnScreen[i]){
+      photosOnScreen[i].timesClicked++;
+    }
+    console.log(photosOnScreen[i].timesClicked);
+  }
+  //console.log();
+  console.log(numberClick);
 
-function handleIncButtonClick(){
   displayNewSetPhotos();
-  console.log('It works');
 
 }
-
 
 var photosSecond = [];
 var photosOnScreen = [];
@@ -78,7 +84,6 @@ function generatePhotos(){
 
   return photosOnScreen;
 }
-
 
 // for (var i = 0; i < 3; i++){
 //   var threePics = document.createElement('img');
