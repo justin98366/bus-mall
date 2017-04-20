@@ -33,6 +33,12 @@ var photos = [
   new RandomPics ('wine glass', 'wine-glass.jpg'),
 ];
 
+try {
+  photos = JSON.parse(localStorage.photos);
+} catch(error){
+  console.log('error retreiveing local stroage');
+}
+
 renderPhotos();
 
 function RandomPics (name, filename){
@@ -70,9 +76,15 @@ function photoClick(event){
 
   if (clicksRemaining > 0){
     renderPhotos();
+
   } else {
     renderChart();
   }
+}
+try {
+  localStorage.photos = JSON.stringify(photos);
+} catch (error) {
+  console.log('something went wrong', error);
 }
 
 function renderPhotos(){
@@ -90,9 +102,7 @@ function renderPhotos(){
     app.appendChild(imageElement);
   }
 }
-
 function renderChart(){
-
   var empty = true;
 
   photos = photos.concat(photosOnScreen);
@@ -131,19 +141,12 @@ function renderChart(){
     data.labels.push(currentPhoto.name);
     data.datasets[0].data.push(currentPhoto.clickCount);
     data.datasets[1].data.push(currentPhoto.displayCount);
-    // var totalNumberOfClicks = currentPhoto.clickCount;
-    // var totalNumberShown = currentPhoto.displayCount;
-    // var percentage = Math.round((totalNumberOfClicks / totalNumberShown) * 100);
-    // data.datasets[0].data.push(percentage);
 
   }
-  var storePercentages;
-  if (localStorage.getItem('percentage') === null){
-    storePercentages = (JSON.stringify(data.datasets[0].data));
-    localStorage.setItem('percentage', storePercentages);
-    console.log('true');
-  }else{
-    console.log('else');
+  try {
+    localStorage.photos = JSON.stringify(photos);
+  } catch (error) {
+    console.log('something went wrong', error);
   }
 
   new Chart(ctx, {
