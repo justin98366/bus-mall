@@ -92,6 +92,8 @@ function renderPhotos(){
 
 function renderChart(){
 
+  var empty = true;
+
   photos = photos.concat(photosOnScreen);
   photos = photos.concat(photosOnPreviousScreen);
   photos = photos.concat(photosOnSecond);
@@ -128,10 +130,72 @@ function renderChart(){
     data.labels.push(currentPhoto.name);
     data.datasets[0].data.push(currentPhoto.clickCount);
     data.datasets[1].data.push(currentPhoto.displayCount);
+    var totalNumberOfClicks = currentPhoto.clickCount;
+    var totalNumberShown = currentPhoto.displayCount;
+    var percentage = Math.round((totalNumberOfClicks / totalNumberShown) * 100);
+    //data.datasets[0].data.push(percentage);
+    console.log(percentage);
   }
 
   new Chart(ctx, {
     type: 'bar',
+    data: data,
+  });
+
+
+
+//Second graph
+
+
+
+
+  var canvas = document.createElement('canvas');
+  canvas.width = app.clientWidth;
+  canvas.height = app.clientWidth;
+  app.appendChild(canvas);
+
+  var ctx = canvas.getContext('2d');
+  ctx.fillRect(0, 0, 50, 50);
+
+  var data = {
+    labels: [],
+    datasets: [
+      {
+        label: 'click count',
+        data: [],
+        backgroundColor: 'red',
+      },
+      {
+        label: 'display count',
+        data: [],
+        backgroundColor: 'blue',
+      },
+    ],
+  };
+
+  var currentPhoto;
+  for(var i = 0; i < photos.length; i++){
+    currentPhoto = photos[i];
+    data.labels.push(currentPhoto.name);
+    //data.datasets[0].data.push(currentPhoto.clickCount);
+    //data.datasets[1].data.push(currentPhoto.displayCount);
+    var totalNumberOfClicks = currentPhoto.clickCount;
+    var totalNumberShown = currentPhoto.displayCount;
+    var percentage = Math.round((totalNumberOfClicks / totalNumberShown) * 100);
+    data.datasets[0].data.push(percentage);
+    //console.log(percentage);
+  }
+  var storePercentages;
+  if (localStorage.getItem('percentage') === null){
+    storePercentages = (JSON.stringify(data.datasets[0].data));
+    localStorage.setItem('percentage', storePercentages);
+    console.log('true');
+  }else{
+    console.log('else');
+  }
+
+  new Chart(ctx, {
+    type: 'pie',
     data: data,
   });
 
