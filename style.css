@@ -11,21 +11,31 @@
 
 html, body{
   height: 100%;
-  background-color: beige;
+  background-color: black;
 }
-
+h1 {
+  text-align: center;
+  color: white;
+  font-family: cursive;
+  margin-bottom: 150px;
+}
 #app{
   width: 100%;
   height: auto;
   display: inline-block;
+  margin: auto;
 }
 
 #app img{
   width: 350px;
   height: 350px;
+  margin-left: 80px;
+
+
 }
 
-canvas{
-  width: 30%;
+#app canvas{
+  width: 75%;
   height: 50%;
+
 }
