@@ -1,7 +1,7 @@
 'use strict';
 
 var app = document.getElementById('app');
-var appTwo = document.getElementById('appTwo');
+
 var clicksRemaining = 25;
 var photosOnSecond = [];
 var photosOnPreviousScreen = [];
@@ -103,7 +103,6 @@ function renderPhotos(){
   }
 }
 function renderChart(){
-  var empty = true;
 
   photos = photos.concat(photosOnScreen);
   photos = photos.concat(photosOnPreviousScreen);
