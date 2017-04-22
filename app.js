@@ -1,6 +1,7 @@
 'use strict';
 
 var app = document.getElementById('app');
+
 var clicksRemaining = 25;
 var photosOnSecond = [];
 var photosOnPreviousScreen = [];
@@ -31,6 +32,12 @@ var photos = [
   new RandomPics ('water can', 'water-can.jpg'),
   new RandomPics ('wine glass', 'wine-glass.jpg'),
 ];
+
+try {
+  photos = JSON.parse(localStorage.photos);
+} catch(error){
+  console.log('error retreiveing local stroage');
+}
 
 renderPhotos();
 
@@ -69,6 +76,7 @@ function photoClick(event){
 
   if (clicksRemaining > 0){
     renderPhotos();
+
   } else {
     renderChart();
   }
@@ -89,7 +97,6 @@ function renderPhotos(){
     app.appendChild(imageElement);
   }
 }
-
 function renderChart(){
 
   photos = photos.concat(photosOnScreen);
@@ -128,6 +135,12 @@ function renderChart(){
     data.labels.push(currentPhoto.name);
     data.datasets[0].data.push(currentPhoto.clickCount);
     data.datasets[1].data.push(currentPhoto.displayCount);
+
+  }
+  try {
+    localStorage.photos = JSON.stringify(photos);
+  } catch (error) {
+    console.log('something went wrong', error);
   }
 
   new Chart(ctx, {

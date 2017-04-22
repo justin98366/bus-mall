@@ -11,31 +11,33 @@
 
 html, body{
   height: 100%;
-  background-color: beige;
+  background-color: black;
 }
-
+h1 {
+  text-align: center;
+  color: white;
+  font-family: cursive;
+  margin-bottom: 150px;
+}
 #app{
   width: 100%;
   height: auto;
   display: inline-block;
+  margin: auto;
 }
 
 #app img{
   width: 350px;
   height: 350px;
+  margin-left: 80px;
+
+
 }
 
+#app canvas{
+  width: 75%;
+  height: 50%;
 
-#picture-two{
-  width: 30%;
-  height: auto;
-  display: inline-block;
-}
-
-#picture-three{
-  width: 30%;
-  height: auto;
-  display: inline-block;
 }
 canvas {
   width: 30%;
