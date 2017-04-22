@@ -81,11 +81,6 @@ function photoClick(event){
     renderChart();
   }
 }
-try {
-  localStorage.photos = JSON.stringify(photos);
-} catch (error) {
-  console.log('something went wrong', error);
-}
 
 function renderPhotos(){
   generatePhotos();
