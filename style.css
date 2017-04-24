@@ -39,3 +39,11 @@ h1 {
   height: 50%;
 
 }
+
+p {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 25px;
+  font-family: cursive;
+  color: white;
+}
